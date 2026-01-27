@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Collaudo/Collaudo.csproj" Id="7b075159-9549-41b4-afda-fa4ee182e080" />
+  <Project Path="Metricly/Metricly.csproj" />
+</Solution>

@@ -2,7 +2,7 @@
 
 A lightweight, type-safe utility library for simple and fast unit conversions in .NET.
 
-[![NuGet](https://img.shields.io/nuget/v/Metricly.svg)](https://www.nuget.org/packages/Metricly/)
+[![NuGet](https://img.shields.io/nuget/v/Metricly.svg)](https://www.nuget.org/packages/Metricly)
 [![License](https://img.shields.io/github/license/Samuconfaa/Metricly.svg)](https://github.com/Samuconfaa/Metricly/blob/main/LICENSE)
 
 ## Overview

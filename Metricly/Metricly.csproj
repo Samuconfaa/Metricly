@@ -1,28 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
 
-		<!-- NuGet packaging (local + publish-ready) -->
-		<IsPackable>true</IsPackable>
-		<PackageId>Metricly</PackageId>
-		<Version>0.0.1-alpha.1</Version>
-		<Authors>Samuconfaa</Authors>
-		<Description>A lightweight utility library for simple, fast, and type-safe unit conversions.</Description>
-		<PackageTags>unit-conversion;measurement;utilities</PackageTags>
-		<RepositoryUrl>https://github.com/Samuconfaa/Metricly</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <!-- NuGet packaging -->
+    <IsPackable>true</IsPackable>
+    <PackageId>Metricly</PackageId>
+    <Version>0.0.1-alpha.1</Version>
+    <Authors>Samuconfaa</Authors>
+    <Description>A lightweight utility library for simple, fast, and type-safe unit conversions.</Description>
+    <PackageTags>unit-conversion;measurement;utilities</PackageTags>
+    <RepositoryUrl>https://github.com/Samuconfaa/Metricly</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<!-- Docs + symbols -->
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Docs + symbols -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-		<!-- README inside the package -->
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-	</PropertyGroup>
+    <!-- README inside the package -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <!-- Licenza standard -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Includi README e LICENSE nel pacchetto -->
+    <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="" />
+    <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
 
 </Project>

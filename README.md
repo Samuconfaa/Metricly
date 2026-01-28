@@ -42,14 +42,9 @@ Metricly supports conversions for the following types:
 Install Metricly via NuGet Package Manager:
 
 ```bash
-dotnet add package Metricly
+dotnet add package Metricly --version 0.0.1-alpha.1
 ```
 
-Or via the NuGet Package Manager Console:
-
-```powershell
-Install-Package Metricly
-```
 
 ## Quick Start
 

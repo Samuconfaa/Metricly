@@ -7,14 +7,16 @@ A lightweight, type-safe utility library for simple and fast unit conversions in
 
 ## Overview
 
-Metricly provides an intuitive, fluent API for converting between various units of measurement. With strong typing and extension methods, you can perform unit conversions with minimal code while maintaining type safety and readability.
+Metricly provides an intuitive, fluent API for converting between various units of measurement. With strong typing, extension methods, and arithmetic operations, you can perform unit conversions and calculations with minimal code while maintaining type safety and readability.
 
 ## Features
 
 -  **Lightweight**: Minimal dependencies and optimized performance
 -  **Type-safe**: Strongly typed measurement classes prevent errors
 -  **Fluent API**: Intuitive and readable syntax
--  **Comprehensive**: Supports 15+ measurement types
+-  **Arithmetic operations**: Add, subtract, multiply, and divide measurements
+-  **Comparison operators**: Compare measurements with ==, !=, >, <, >=, <=
+-  **Comprehensive**: Supports 14 measurement types
 -  **Easy to use**: Simple extension methods for conversions
 -  **High performance**: Aggressive inlining for optimal speed
 
@@ -45,8 +47,9 @@ Install Metricly via NuGet Package Manager:
 dotnet add package Metricly --version 0.0.1-alpha.1
 ```
 
-
 ## Quick Start
+
+### Basic Conversions
 
 ```csharp
 using Metricly.Core;
@@ -65,26 +68,43 @@ Console.WriteLine(temp.ToKelvin());           // 373.15
 var weight = 75.Kilograms();
 Console.WriteLine(weight.ToPounds());         // 165.347...
 Console.WriteLine(weight.ToGrams());          // 75000
+```
 
-// Time conversions
-var duration = 2.5.Hours();
-Console.WriteLine(duration.ToMinutes());      // 150
-Console.WriteLine(duration.ToSeconds());      // 9000
+### Arithmetic Operations
 
-// Speed conversions
-var velocity = 100.KilometersPerHour();
-Console.WriteLine(velocity.ToMilesPerHour()); // 62.137...
-Console.WriteLine(velocity.ToMetersPerSecond()); // 27.777...
+```csharp
+using Metricly.Core;
 
-// Data size conversions
-var fileSize = 5.GB();
-Console.WriteLine(fileSize.ToMB());           // 5000
-Console.WriteLine(fileSize.ToGiB());          // 4.656...
+// Addition and subtraction
+var total = 1.Kilometers() + 500.Meters();
+Console.WriteLine(total.ToKilometers());      // 1.5
 
-// Energy conversions
-var energy = 1000.cal();
-Console.WriteLine(energy.TokJ());             // 4.184
-Console.WriteLine(energy.ToWh());             // 1.162...
+var remaining = 42.Kilometers() - 10.Kilometers();
+Console.WriteLine(remaining.ToKilometers());  // 32
+
+// Multiplication and division
+var triple = 5.Meters() * 3;
+Console.WriteLine(triple.ToMeters());         // 15
+
+var half = 10.Kilograms() / 2;
+Console.WriteLine(half.ToKilograms());        // 5
+
+// Ratio calculation
+var ratio = 100.Kilometers() / 50.Kilometers();
+Console.WriteLine(ratio);                     // 2.0
+```
+
+### Comparisons
+
+```csharp
+using Metricly.Core;
+
+var length1 = 100.Centimeters();
+var length2 = 1.Meters();
+
+Console.WriteLine(length1 == length2);        // true
+Console.WriteLine(length1 > length2);         // false
+Console.WriteLine(1.5.Meters() >= length2);   // true
 ```
 
 ## Usage Examples
@@ -94,12 +114,10 @@ Console.WriteLine(energy.ToWh());             // 1.162...
 ```csharp
 using Metricly.Core;
 
-// Create measurements
-var height = 180.Centimetres();
+var height = 180.Centimeters();
 var distance = 26.2.Miles();
 var space = 1.AstronomicalUnits();
 
-// Convert to different units
 Console.WriteLine($"Height: {height.ToFeet()} feet");
 Console.WriteLine($"Marathon: {distance.ToKilometers()} km");
 Console.WriteLine($"Earth-Sun: {space.ToKilometers()} km");
@@ -119,6 +137,21 @@ Console.WriteLine($"{roomTemp.ToCelsius()}°C");     // 20°C
 Console.WriteLine($"{absolute.ToCelsius()}°C");     // 0°C
 ```
 
+### Mixed Unit Calculations
+
+```csharp
+using Metricly.Core;
+
+// Calculate total distance
+var run1 = 5.Kilometers();
+var run2 = 3.Miles();
+var run3 = 2000.Meters();
+var totalRun = run1 + run2 + run3;
+
+Console.WriteLine($"Total: {totalRun.ToKilometers():F2} km");
+Console.WriteLine($"Average: {(totalRun / 3).ToKilometers():F2} km");
+```
+
 ### Data Transfer Rates
 
 ```csharp
@@ -131,55 +164,29 @@ var downloadSpeed = 5.MegabytesPerSecond();
 Console.WriteLine($"{downloadSpeed.ToMegabitsPerSecond()} Mbps");   // 40 Mbps
 ```
 
-### Fuel Consumption
-
-```csharp
-using Metricly.Core;
-
-var efficiency = 15.KmPerLiter();
-Console.WriteLine($"{efficiency.ToMpgUS()} MPG US");        // 35.28 MPG
-Console.WriteLine($"{efficiency.ToLiterPer100Km()} L/100km"); // 6.67 L/100km
-```
-
-### Volume Measurements
-
-```csharp
-using Metricly.Core;
-
-var recipe = 2.CupsUS();
-Console.WriteLine($"{recipe.ToMilliliters()} ml");    // 480 ml
-Console.WriteLine($"{recipe.ToTablespoonsUS()} tbsp"); // 32 tbsp
-
-var tank = 50.Liters();
-Console.WriteLine($"{tank.ToGallonsUS()} gallons");   // 13.21 gallons
-```
-
 ## Advanced Usage
 
-### Chaining Conversions
+### Chaining Operations
 
 ```csharp
-// You can chain operations using the measure objects
-var marathon = 42.195.Kilometers();
-var inMiles = marathon.ToMiles();
-var inFeet = 42.195.Kilometers().ToMeters() * 3.28084; // Convert to feet manually
-
-// Or use the measure as an intermediate
 var distance = 100.Meters();
 var speed = 10.MetersPerSecond();
-var time = distance.BaseValue / speed.BaseValue; // 10 seconds
+var time = distance / speed;
+
+var doubled = distance * 2;
+var half = distance / 2;
 ```
 
 ### Custom Calculations
 
 ```csharp
-// Access the base value for calculations
+// Access base value for calculations
 var length1 = 10.Meters();
 var length2 = 5.Meters();
-var totalMeters = length1.BaseValue + length2.BaseValue; // 15 meters
+var totalMeters = length1.BaseValue + length2.BaseValue; // 15
 
+// Calculate area
 var area = length1.BaseValue * length2.BaseValue; // 50 square meters
-var areaInSquareFeet = (length1.ToFeet() * length2.ToFeet());
 ```
 
 ## Performance
@@ -210,7 +217,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 Future enhancements may include:
 
 - [ ] Additional measurement types (luminosity, electrical units, etc.)
-- [ ] Arithmetic operators between measurements
+- [x] Arithmetic operators between measurements
 - [ ] String parsing and formatting
 - [ ] Unit tests and benchmarks
 - [ ] More comprehensive documentation

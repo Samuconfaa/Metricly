@@ -57,7 +57,7 @@ namespace Metricly.Core
         private const double Microgram = 0.000001;
 
         // -------------------------
-        // Imperial / US units
+        // Imperial units
         // -------------------------
 
         /// <summary>Represents one ounce (28.349523125 grams).</summary>

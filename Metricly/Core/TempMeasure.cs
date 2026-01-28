@@ -14,6 +14,7 @@ namespace Metricly.Core
         }
 
         public double To(double ratio, double offset) => (KelvinValue - offset) / ratio;
+        public double To() => KelvinValue;
     }
 
     public static class TemperatureExtensions
@@ -26,10 +27,13 @@ namespace Metricly.Core
 
         //chiamo il metodo con il valore in kelvin
         public static TempMeasure Celsius(this double value)
-            => new TempMeasure(value + CelsiusOffset);
+            => new(value + CelsiusOffset);
 
         public static TempMeasure Fahrenheit(this double value)
-            => new TempMeasure((value + FahrenheitOffset) * FahrenheitRatio);
+            => new((value + FahrenheitOffset) * FahrenheitRatio);
+
+        public static TempMeasure Kelvin(this double value)
+            => new(value);
 
         //grazie al valore in kelvin faccio poi la conversione
         public static double ToCelsius(this TempMeasure m)
@@ -37,5 +41,7 @@ namespace Metricly.Core
 
         public static double ToFahrenheit(this TempMeasure m)
             => (m.KelvinValue / FahrenheitRatio) - FahrenheitOffset;
+
+        public static double ToKelvin(this TempMeasure m) => m.KelvinValue;
     }
 }

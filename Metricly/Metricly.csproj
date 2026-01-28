@@ -1,9 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<!-- NuGet packaging (local + publish-ready) -->
+		<IsPackable>true</IsPackable>
+		<PackageId>Metricly</PackageId>
+		<Version>0.0.1-alpha.1</Version>
+		<Authors>Samuconfaa</Authors>
+		<Description>A lightweight utility library for simple, fast, and type-safe unit conversions.</Description>
+		<PackageTags>unit-conversion;measurement;utilities</PackageTags>
+		<RepositoryUrl>https://github.com/Samuconfaa/Metricly</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+
+		<!-- Docs + symbols -->
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<!-- README inside the package -->
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
 
 </Project>

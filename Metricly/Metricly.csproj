@@ -8,7 +8,7 @@
     <!-- NuGet packaging -->
     <IsPackable>true</IsPackable>
     <PackageId>Metricly</PackageId>
-    <Version>0.0.1-alpha.1</Version>
+    <Version>0.0.1-beta.1</Version>
     <Authors>Samuconfaa</Authors>
     <Description>A lightweight utility library for simple, fast, and type-safe unit conversions.</Description>
     <PackageTags>unit-conversion;measurement;utilities</PackageTags>

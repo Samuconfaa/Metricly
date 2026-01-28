@@ -14,6 +14,7 @@
 		<PackageTags>unit-conversion;measurement;utilities</PackageTags>
 		<RepositoryUrl>https://github.com/Samuconfaa/Metricly</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
 		<!-- Docs + symbols -->
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

@@ -7,23 +7,26 @@ A lightweight, type-safe utility library for simple and fast unit conversions in
 
 ## Overview
 
-Metricly provides an intuitive, fluent API for converting between various units of measurement. With strong typing, extension methods, and arithmetic operations, you can perform unit conversions and calculations with minimal code while maintaining type safety and readability.
+Metricly provides an intuitive, fluent API for converting between various units of measurement. With strong typing, extension methods, arithmetic operations, and dimensional calculations, you can perform unit conversions and physics-based calculations with minimal code while maintaining type safety and readability.
 
 ## Features
 
--  **Lightweight**: Minimal dependencies and optimized performance
--  **Type-safe**: Strongly typed measurement classes prevent errors
--  **Fluent API**: Intuitive and readable syntax
--  **Arithmetic operations**: Add, subtract, multiply, and divide measurements
--  **Comparison operators**: Compare measurements with ==, !=, >, <, >=, <=
--  **Comprehensive**: Supports 14 measurement types
--  **Easy to use**: Simple extension methods for conversions
--  **High performance**: Aggressive inlining for optimal speed
+- **Lightweight**: Minimal dependencies and optimized performance
+- **Type-safe**: Strongly typed measurement classes prevent errors
+- **Fluent API**: Intuitive and readable syntax
+- **Arithmetic operations**: Add, subtract, multiply, and divide measurements
+- **Dimensional operations**: Physics-based calculations (Force = Mass × Acceleration, etc.)
+- **Physical constants**: 80+ fundamental constants (speed of light, gravity, etc.)
+- **Comparison operators**: Compare measurements with ==, !=, >, <, >=, <=
+- **Comprehensive**: Supports 22 measurement types
+- **Easy to use**: Simple extension methods for conversions
+- **High performance**: Aggressive inlining for optimal speed
 
 ## Supported Measurement Types
 
 Metricly supports conversions for the following types:
 
+### Basic Measurements
 - **Length** - meters, kilometers, miles, feet, inches, nautical miles, astronomical units, and more
 - **Mass** - grams, kilograms, pounds, ounces, metric tons, and more
 - **Temperature** - Celsius, Fahrenheit, Kelvin
@@ -31,8 +34,23 @@ Metricly supports conversions for the following types:
 - **Speed** - m/s, km/h, mph, knots, feet per second
 - **Area** - square meters, hectares, acres, square miles, and more
 - **Volume** - liters, gallons (US/Imperial), cubic meters, cups, tablespoons, and more
+
+### Physics & Engineering
+- **Force** - Newton, kilonewton, pound-force, dyne, kilogram-force
+- **Acceleration** - m/s², standard gravity (g), ft/s², gal
 - **Pressure** - Pascal, atmospheres, PSI, Torr
 - **Energy** - joules, calories, watt-hours, BTU, electronvolts
+- **Power** - watts, kilowatts, horsepower
+- **Torque** - Newton-meter, foot-pound, inch-pound
+- **Density** - kg/m³, g/cm³, lb/ft³
+
+### Electrical Units
+- **Current** - Ampere, milliampere, microampere, kiloampere
+- **Voltage** - Volt, millivolt, kilovolt, megavolt
+- **Resistance** - Ohm, kiloohm, megaohm
+- **Electric Power** - Watt, kilowatt, megawatt, horsepower
+
+### Other
 - **Frequency** - hertz and all SI prefixes (nano to yotta)
 - **Data Size** - bytes, KB/KiB, MB/MiB, GB/GiB, TB/TiB (decimal and binary)
 - **Data Rate** - bits/bytes per second with various prefixes
@@ -44,7 +62,13 @@ Metricly supports conversions for the following types:
 Install Metricly via NuGet Package Manager:
 
 ```bash
-dotnet add package Metricly --version 0.0.1-alpha.1
+dotnet add package Metricly --version 0.1.0-beta.1
+```
+
+Or via Package Manager Console:
+
+```powershell
+NuGet\Install-Package Metricly -Version 0.1.0-beta.1
 ```
 
 ## Quick Start
@@ -94,100 +118,220 @@ var ratio = 100.Kilometers() / 50.Kilometers();
 Console.WriteLine(ratio);                     // 2.0
 ```
 
-### Comparisons
+### Dimensional Operations (NEW in v0.1.0)
+
+Metricly now supports physics-based dimensional operations using extension methods:
 
 ```csharp
 using Metricly.Core;
+using Metricly.Core.Operations;
+using Metricly.Core.Constants;
 
-var length1 = 100.Centimeters();
-var length2 = 1.Meters();
+// Kinematics: Speed = Distance / Time
+var distance = 100.0.Meters();
+var time = 10.0.Seconds();
+var speed = distance.ToSpeed(time);
+Console.WriteLine($"Speed: {speed.ToKilometersPerHour()} km/h");
 
-Console.WriteLine(length1 == length2);        // true
-Console.WriteLine(length1 > length2);         // false
-Console.WriteLine(1.5.Meters() >= length2);   // true
+// Dynamics: Force = Mass × Acceleration
+var mass = 10.0.Kilograms();
+var acceleration = 9.81.MetersPerSecondSquared();
+var force = mass.ToForce(acceleration);
+Console.WriteLine($"Force: {force.ToNewtons()} N");
+
+// Electricity: Ohm's Law (V = I × R)
+var current = 2.0.Amperes();
+var resistance = 10.0.Ohms();
+var voltage = current.ToVoltage(resistance);
+Console.WriteLine($"Voltage: {voltage.ToVolts()} V");
+
+// Energy calculations
+var height = 10.0.Meters();
+var potentialEnergy = DimensionalOperations.CalculatePotentialEnergy(
+    mass, 
+    PhysicalConstants.StandardGravity, 
+    height);
+Console.WriteLine($"PE: {potentialEnergy.TokJ()} kJ");
 ```
 
-## Usage Examples
+### Physical Constants (NEW in v0.1.0)
 
-### Length Measurements
+Access 80+ fundamental physical constants:
+
+```csharp
+using Metricly.Core.Constants;
+
+// Universal constants
+var c = PhysicalConstants.SpeedOfLight;  // 299,792,458 m/s
+var g = PhysicalConstants.StandardGravity;  // 9.80665 m/s²
+
+// Calculate time for light to travel from Sun to Earth
+var sunDistance = PhysicalConstants.AstronomicalUnit;
+var lightTime = sunDistance.ToTime(c);
+Console.WriteLine($"Sun to Earth: {lightTime.ToMinutes():F2} minutes");
+
+// Astronomical data
+var earthMass = PhysicalConstants.EarthMass;
+var solarMass = PhysicalConstants.SolarMass;
+
+// Thermodynamic constants
+var waterDensity = PhysicalConstants.WaterDensity;
+var absoluteZero = PhysicalConstants.AbsoluteZero;
+```
+
+## Advanced Examples
+
+### Example 1: Electrical Circuit Analysis
 
 ```csharp
 using Metricly.Core;
+using Metricly.Core.Operations;
 
-var height = 180.Centimeters();
-var distance = 26.2.Miles();
-var space = 1.AstronomicalUnits();
+// Circuit with voltage source and resistors in series
+var voltage = 12.0.Volts();
+var resistor1 = 100.0.Ohms();
+var resistor2 = 200.0.Ohms();
 
-Console.WriteLine($"Height: {height.ToFeet()} feet");
-Console.WriteLine($"Marathon: {distance.ToKilometers()} km");
-Console.WriteLine($"Earth-Sun: {space.ToKilometers()} km");
+// Total resistance
+var totalResistance = resistor1 + resistor2;
+
+// Calculate current (Ohm's Law: I = V / R)
+var current = voltage.ToCurrent(totalResistance);
+Console.WriteLine($"Current: {current.ToMilliamperes():F2} mA");  // 40 mA
+
+// Calculate power dissipation (P = V × I)
+var power = voltage.ToPower(current);
+Console.WriteLine($"Power: {power.ToWatts():F3} W");  // 0.48 W
 ```
 
-### Temperature Conversions
+### Example 2: Projectile Motion
 
 ```csharp
 using Metricly.Core;
+using Metricly.Core.Operations;
+using Metricly.Core.Constants;
 
-var freezing = 0.Celsius();
-var roomTemp = 68.Fahrenheit();
-var absolute = 273.15.Kelvin();
+var initialSpeed = 20.0.MetersPerSecond();
+var gravity = PhysicalConstants.StandardGravity;
 
-Console.WriteLine($"{freezing.ToFahrenheit()}°F"); // 32°F
-Console.WriteLine($"{roomTemp.ToCelsius()}°C");     // 20°C
-Console.WriteLine($"{absolute.ToCelsius()}°C");     // 0°C
+// Calculate kinetic energy
+var mass = 1.0.Kilograms();
+var kineticEnergy = DimensionalOperations.CalculateKineticEnergy(mass, initialSpeed);
+Console.WriteLine($"Kinetic Energy: {kineticEnergy.ToJ()} J");
+
+// Calculate maximum height (ignoring air resistance)
+// At max height: PE = KE initial
+// mgh = ½mv²  →  h = v²/(2g)
+var maxHeight = (initialSpeed.BaseValue * initialSpeed.BaseValue) / 
+                (2 * gravity.BaseValue);
+Console.WriteLine($"Max height: {maxHeight:F2} m");
 ```
 
-### Mixed Unit Calculations
+### Example 3: Home Energy Monitor
 
 ```csharp
 using Metricly.Core;
+using Metricly.Core.Operations;
 
-// Calculate total distance
-var run1 = 5.Kilometers();
-var run2 = 3.Miles();
-var run3 = 2000.Meters();
-var totalRun = run1 + run2 + run3;
+// Calculate monthly energy consumption
+var dailyUsage = 15.0.kWh();
+var monthlyUsage = dailyUsage * 30;
+Console.WriteLine($"Monthly: {monthlyUsage.TokWh()} kWh");
 
-Console.WriteLine($"Total: {totalRun.ToKilometers():F2} km");
-Console.WriteLine($"Average: {(totalRun / 3).ToKilometers():F2} km");
+// Calculate cost (example rate)
+var costPerKwh = 0.15; // $0.15 per kWh
+var monthlyCost = monthlyUsage.TokWh() * costPerKwh;
+Console.WriteLine($"Monthly cost: ${monthlyCost:F2}");
+
+// Compare appliances
+var ac = 5.0.kWh();
+var heater = 3.0.kWh();
+var total = ac + heater;
+var acPercentage = (ac / total) * 100;
+Console.WriteLine($"AC is {acPercentage:F1}% of total");
 ```
 
-### Data Transfer Rates
+### Example 4: Speed of Light Calculations
 
 ```csharp
 using Metricly.Core;
+using Metricly.Core.Operations;
+using Metricly.Core.Constants;
 
-var internetSpeed = 100.MegabitsPerSecond();
-Console.WriteLine($"{internetSpeed.ToMegabytesPerSecond()} MB/s"); // 12.5 MB/s
+var lightSpeed = PhysicalConstants.SpeedOfLight;
 
-var downloadSpeed = 5.MegabytesPerSecond();
-Console.WriteLine($"{downloadSpeed.ToMegabitsPerSecond()} Mbps");   // 40 Mbps
+// Time for light to reach Earth from the Sun
+var sunToEarth = PhysicalConstants.AstronomicalUnit;
+var timeToEarth = sunToEarth.ToTime(lightSpeed);
+Console.WriteLine($"Sun to Earth: {timeToEarth.ToMinutes():F2} minutes");
+
+// Time for light to reach the Moon
+var moonDistance = 384_400.0.Kilometers();
+var timeToMoon = moonDistance.ToTime(lightSpeed);
+Console.WriteLine($"Earth to Moon: {timeToMoon.ToSeconds():F2} seconds");
 ```
 
-## Advanced Usage
+## Dimensional Operations Reference
 
-### Chaining Operations
+Metricly supports the following dimensional operations using extension methods:
 
-```csharp
-var distance = 100.Meters();
-var speed = 10.MetersPerSecond();
-var time = distance / speed;
+| Physics Law | Method | Example |
+|-------------|--------|---------|
+| **Kinematics** |
+| Speed = Distance / Time | `distance.ToSpeed(time)` | `100m.ToSpeed(10s)` |
+| Distance = Speed × Time | `speed.ToDistance(time)` | `10mps.ToDistance(5s)` |
+| Acceleration = Speed / Time | `speed.ToAcceleration(time)` | `20mps.ToAcceleration(5s)` |
+| **Dynamics** |
+| Force = Mass × Acceleration | `mass.ToForce(acceleration)` | `10kg.ToForce(9.81mps²)` |
+| Work = Force × Distance | `force.ToEnergy(distance)` | `100N.ToEnergy(5m)` |
+| Torque = Force × Lever | `force.ToTorque(lever)` | `50N.ToTorque(0.3m)` |
+| **Electricity** |
+| Voltage = Current × Resistance | `current.ToVoltage(resistance)` | `2A.ToVoltage(10Ω)` |
+| Current = Voltage / Resistance | `voltage.ToCurrent(resistance)` | `12V.ToCurrent(100Ω)` |
+| Power = Voltage × Current | `voltage.ToPower(current)` | `12V.ToPower(2A)` |
+| **Geometry** |
+| Area = Length × Width | `length.ToArea(width)` | `10m.ToArea(5m)` |
+| Volume = Area × Height | `area.ToVolume(height)` | `50m².ToVolume(3m)` |
+| **Other** |
+| Density = Mass / Volume | `mass.ToDensity(volume)` | `1000kg.ToDensity(1m³)` |
+| Pressure = Force / Area | `force.ToPressure(area)` | `1000N.ToPressure(0.1m²)` |
+| Power = Energy / Time | `energy.ToPower(time)` | `1000J.ToPower(10s)` |
 
-var doubled = distance * 2;
-var half = distance / 2;
-```
+## Physical Constants Reference
 
-### Custom Calculations
+Access fundamental physical constants through `PhysicalConstants` class:
 
-```csharp
-// Access base value for calculations
-var length1 = 10.Meters();
-var length2 = 5.Meters();
-var totalMeters = length1.BaseValue + length2.BaseValue; // 15
+### Universal Constants
+- `SpeedOfLight` - c = 299,792,458 m/s
+- `GravitationalConstant` - G = 6.67430×10⁻¹¹ N⋅m²/kg²
+- `PlanckConstant` - h = 6.62607015×10⁻³⁴ J⋅s
 
-// Calculate area
-var area = length1.BaseValue * length2.BaseValue; // 50 square meters
-```
+### Electromagnetic
+- `ElementaryCharge` - e = 1.602176634×10⁻¹⁹ C
+- `MagneticConstant` - μ₀
+- `ElectricConstant` - ε₀
+
+### Atomic & Quantum
+- `AvogadroConstant` - Nₐ = 6.02214076×10²³ mol⁻¹
+- `BoltzmannConstant` - k = 1.380649×10⁻²³ J/K
+- `ElectronMass`, `ProtonMass`, `NeutronMass`
+- `BohrRadius`, `RydbergConstant`
+
+### Gravity & Astronomy
+- `StandardGravity` - g = 9.80665 m/s²
+- `EarthMass`, `SolarMass`
+- `EarthRadius`
+- `AstronomicalUnit` - AU
+- `LightYear`, `Parsec`
+
+### Thermodynamic
+- `GasConstant` - R = 8.314462618 J/(mol⋅K)
+- `AbsoluteZero` - 0 K
+- `StandardTemperature`, `StandardPressure`
+- `WaterDensity`, `WaterFreezingPoint`, `WaterBoilingPoint`
+
+### Planck Units
+- `PlanckLength`, `PlanckTime`, `PlanckMass`, `PlanckTemperature`
 
 ## Performance
 
@@ -214,22 +358,57 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## Roadmap
 
-Future enhancements may include:
-
-- [ ] Additional measurement types (luminosity, electrical units, etc.)
+- [x] Core measurement types (Length, Mass, Temperature, etc.)
 - [x] Arithmetic operators between measurements
+- [x] Electrical units (Current, Voltage, Resistance, Power)
+- [x] Force, Acceleration, Torque, Density
+- [x] Dimensional operations (physics-based calculations)
+- [x] Physical constants library
 - [ ] String parsing and formatting
+- [ ] Additional measurement types (Luminosity, Capacitance, Inductance)
 - [ ] Unit tests and benchmarks
 - [ ] More comprehensive documentation
+
+## What's New in v0.1.0
+
+### New Features
+
+#### 8 New Measurement Types
+- **Current** - Ampere, mA, μA, kA
+- **Voltage** - Volt, mV, kV, MV
+- **Resistance** - Ohm, kΩ, MΩ
+- **Power** - Watt, kW, MW, Horsepower
+- **Force** - Newton, kN, pound-force
+- **Acceleration** - m/s², g-force
+- **Density** - kg/m³, g/cm³
+- **Torque** - Newton-meter, foot-pound
+
+#### Dimensional Operations
+Physics-based calculations using extension methods:
+- Kinematics (speed, acceleration)
+- Dynamics (force, work, torque)
+- Electricity (Ohm's Law, power)
+- Geometry (area, volume)
+- Energy calculations (kinetic, potential)
+
+#### Physical Constants
+80+ fundamental constants including:
+- Universal constants (c, G, h)
+- Electromagnetic constants
+- Atomic constants (electron mass, Avogadro, etc.)
+- Astronomical data (AU, solar mass, etc.)
+- Thermodynamic values
+- Planck units
+
+### Documentation
+- Extended documentation with physics examples
+- Complete API reference for new features
+- Real-world usage examples
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
-
-- Inspired by the need for simple, type-safe unit conversions in .NET
-- Built with modern C# features for optimal performance and developer experience
 
 ## Support
 

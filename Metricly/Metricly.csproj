@@ -8,10 +8,11 @@
     <!-- NuGet packaging -->
     <IsPackable>true</IsPackable>
     <PackageId>Metricly</PackageId>
-    <Version>0.0.1-beta.1</Version>
+    <Version>0.0.2-beta.1</Version>
     <Authors>Samuconfaa</Authors>
     <Description>A lightweight utility library for simple, fast, and type-safe unit conversions.</Description>
-    <PackageTags>unit-conversion;measurement;utilities</PackageTags>
+	  <PackageTags>unit-conversion;measurement;units;conversion;metric;imperial;length;mass;temperature;volume;speed;area;time;pressure;energy;physics;math;utilities;dotnet;csharp;typesafe</PackageTags>
+    <PackageProjectUrl>https://samuconfa.it/metricly/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Samuconfaa/Metricly</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

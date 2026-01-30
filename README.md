@@ -344,7 +344,7 @@ Metricly is designed for high performance:
 
 ## Requirements
 
-- .NET 10.0 or higher
+- .NET 8.0 or higher
 
 ## Contributing
 
